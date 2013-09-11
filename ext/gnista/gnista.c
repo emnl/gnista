@@ -7,18 +7,18 @@ typedef int bool;
 
 
 typedef struct instance_logwriter {
-  	sparkey_logwriter *logwriter;
-  	int open;
+	sparkey_logwriter *logwriter;
+	int open;
 } instance_logwriter;
 
 typedef struct instance_logreader {
-  	sparkey_logreader *logreader;
-  	int open;
+	sparkey_logreader *logreader;
+	int open;
 } instance_logreader;
 
 typedef struct instance_hashreader {
-  	sparkey_hashreader *hashreader;
-  	int open;
+	sparkey_hashreader *hashreader;
+	int open;
 } instance_hashreader;
 
 /********************************************************************************/
@@ -44,7 +44,7 @@ static void dealloc_logwriter(void *p) {
 	instance_logwriter *i_logwriter = p;
 
 	if (i_logwriter->open) {
-	    sparkey_returncode returncode;
+		sparkey_returncode returncode;
 		returncode = sparkey_logwriter_close(&i_logwriter->logwriter);
 
 		if (returncode != SPARKEY_SUCCESS) {
@@ -57,7 +57,7 @@ static void dealloc_logwriter(void *p) {
 
 static VALUE alloc_logwriter(VALUE klass) {
 	instance_logwriter *i_logwriter = ALLOC(instance_logwriter);
-  	return Data_Wrap_Struct(klass, 0, dealloc_logwriter, i_logwriter);
+	return Data_Wrap_Struct(klass, 0, dealloc_logwriter, i_logwriter);
 }
 
 static instance_logwriter* get_logwriter(VALUE self) {
@@ -182,7 +182,7 @@ static void dealloc_logreader(void *p) {
 
 static VALUE alloc_logreader(VALUE klass) {
 	instance_logreader *i_logreader = ALLOC(instance_logreader);
-  	return Data_Wrap_Struct(klass, 0, dealloc_logreader, i_logreader);
+	return Data_Wrap_Struct(klass, 0, dealloc_logreader, i_logreader);
 }
 
 static instance_logreader* get_logreader(VALUE self) {
@@ -233,7 +233,7 @@ static VALUE method_logreader_each(VALUE self) {
 		returncode = sparkey_logiter_next(logiter, i_logreader->logreader);
 
 		if (sparkey_logiter_state(logiter) != SPARKEY_ITER_ACTIVE) {
-		 	break;
+			break;
 		}
 
 		uint64_t wanted_keylen = sparkey_logiter_keylen(logiter);
@@ -294,7 +294,7 @@ static void dealloc_hashreader(void *p) {
 
 static VALUE alloc_hashreader(VALUE klass) {
 	instance_hashreader *i_hashreader = ALLOC(instance_hashreader);
-  	return Data_Wrap_Struct(klass, 0, dealloc_hashreader, i_hashreader);
+	return Data_Wrap_Struct(klass, 0, dealloc_hashreader, i_hashreader);
 }
 
 static instance_hashreader* get_hashreader(VALUE self) {
@@ -373,7 +373,7 @@ static VALUE method_hash_each(VALUE self) {
 		returncode = sparkey_logiter_hashnext(logiter, i_hashreader->hashreader);
 
 		if (sparkey_logiter_state(logiter) != SPARKEY_ITER_ACTIVE) {
-		 	break;
+			break;
 		}
 
 		uint64_t wanted_keylen = sparkey_logiter_keylen(logiter);
@@ -426,7 +426,7 @@ static VALUE method_hash_get(VALUE self, VALUE key) {
 	returncode = sparkey_hash_get(i_hashreader->hashreader, (uint8_t*)RSTRING_PTR(key), RSTRING_LEN(key), logiter);
 
 	if (sparkey_logiter_state(logiter) != SPARKEY_ITER_ACTIVE) {
-	 	return Qnil;
+		return Qnil;
 	}
 
 	uint64_t wanted_valuelen = sparkey_logiter_valuelen(logiter);
