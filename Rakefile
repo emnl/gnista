@@ -12,8 +12,9 @@ task :make do |t|
 end
 
 task :clean do |t|
-  sh "rm ext/gnista/*.bundle"
-  sh "rm ext/gnista/Makefile"
-  sh "rm ext/gnista/*.log"
-  sh "rm ext/gnista/*.o"
+  sh "rm -f ext/gnista/*.bundle"
+  sh "rm -f ext/gnista/Makefile"
+  sh "rm -f ext/gnista/*.log"
+  sh "rm -f ext/gnista/*.o"
+  sh "rm -rf pkg"
 end
