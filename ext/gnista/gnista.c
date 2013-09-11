@@ -242,8 +242,10 @@ static VALUE method_logreader_each(VALUE self) {
 		returncode = sparkey_logiter_fill_key(logiter, i_logreader->logreader, wanted_keylen, keybuf, &actual_keylen);
 
 		if (returncode != SPARKEY_SUCCESS) {
+			free(keybuf);
 			raise_sparkey(returncode);
 		} else if (wanted_keylen != actual_keylen) {
+			free(keybuf);
 			rb_raise(GnistaException, "Corrupted read in logreader.");
 		}
 
@@ -253,8 +255,12 @@ static VALUE method_logreader_each(VALUE self) {
 		returncode = sparkey_logiter_fill_value(logiter, i_logreader->logreader, wanted_valuelen, valuebuf, &actual_valuelen);
 
 		if (returncode != SPARKEY_SUCCESS) {
+			free(keybuf);
+			free(valuebuf);
 			raise_sparkey(returncode);
 		} else if (wanted_valuelen != actual_valuelen) {
+			free(keybuf);
+			free(valuebuf);
 			rb_raise(GnistaException, "Corrupted read in logreader.");
 		}
 
@@ -382,8 +388,10 @@ static VALUE method_hash_each(VALUE self) {
 		returncode = sparkey_logiter_fill_key(logiter, sparkey_hash_getreader(i_hashreader->hashreader), wanted_keylen, keybuf, &actual_keylen);
 
 		if (returncode != SPARKEY_SUCCESS) {
+			free(keybuf);
 			raise_sparkey(returncode);
 		} else if (wanted_keylen != actual_keylen) {
+			free(keybuf);
 			rb_raise(GnistaException, "Corrupt entry in logreader.");
 		}
 
@@ -393,8 +401,12 @@ static VALUE method_hash_each(VALUE self) {
 		returncode = sparkey_logiter_fill_value(logiter, sparkey_hash_getreader(i_hashreader->hashreader), wanted_valuelen, valuebuf, &actual_valuelen);
 
 		if (returncode != SPARKEY_SUCCESS) {
+			free(keybuf);
+			free(valuebuf);
 			raise_sparkey(returncode);
 		} else if (wanted_valuelen != actual_valuelen) {
+			free(keybuf);
+			free(valuebuf);
 			rb_raise(GnistaException, "Corrupt entry in logreader.");
 		}
 
@@ -435,14 +447,18 @@ static VALUE method_hash_get(VALUE self, VALUE key) {
 	returncode = sparkey_logiter_fill_value(logiter, sparkey_hash_getreader(i_hashreader->hashreader), wanted_valuelen, valuebuf, &actual_valuelen);
 
 	if (returncode != SPARKEY_SUCCESS) {
+		free(valuebuf);
 		raise_sparkey(returncode);
 	} else if (wanted_valuelen != actual_valuelen) {
+		free(valuebuf);
 		rb_raise(GnistaException, "Corrupt entry in hash.");
 	}
 
 	sparkey_logiter_close(&logiter);
 
-	return rb_str_new((char *)valuebuf, actual_valuelen);
+	VALUE v = rb_str_new((char *)valuebuf, actual_valuelen);
+	free(valuebuf);
+	return v;
 }
 
 static VALUE method_hash_maxkeylen(VALUE self) {
