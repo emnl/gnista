@@ -59,15 +59,17 @@ hash.close
 
 ## Contributing
 
+__Step-by-step:__
+
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Write some code
+4. Build and test
+5. Commit your changes (`git commit -am 'Add some feature'`)
+6. Push to the branch (`git push origin my-new-feature`)
+7. Create new Pull Request
+
 Use the following commands to build the native extensions and test:
 
 	$ rake make
 	$ rake test
-
-Then:
-
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
