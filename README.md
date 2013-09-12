@@ -35,7 +35,8 @@ logwriter.del "key" # delete entry
 logwriter.flush
 
 logreader = Gnista::Logreader.new "mylog.log"
-logreader.each {|key,value| puts key, value }
+logreader.each {|key,value,type| puts key, value, type }
+# => "key", "value"/nil, :put/:delete
 
 Gnista::Hash.write "mylog.hash", "mylog.log" # no preferred hash size
 Gnista::Hash.write "mylog.hash", "mylog.log", 4 # 32 bit murmurhash3_x86_32
