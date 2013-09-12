@@ -55,6 +55,8 @@ hash.collisions
 logwriter.close
 logreader.close
 hash.close
+
+logwriter.open? || logreader.open? || hash.open? # => false
 ```
 
 
