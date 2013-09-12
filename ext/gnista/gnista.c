@@ -229,6 +229,8 @@ static VALUE method_logreader_each(VALUE self) {
 		raise_sparkey(returncode);
 	}
 
+	VALUE put_sym = ID2SYM(rb_intern("put"));
+	VALUE del_sym = ID2SYM(rb_intern("delete"));
 	uint8_t *keybuf = malloc(sparkey_logreader_maxkeylen(i_logreader->logreader));
 	uint8_t *valuebuf = malloc(sparkey_logreader_maxvaluelen(i_logreader->logreader));
 	while (1) {
@@ -252,22 +254,25 @@ static VALUE method_logreader_each(VALUE self) {
 			rb_raise(GnistaException, "Corrupted read in logreader.");
 		}
 
-		uint64_t wanted_valuelen = sparkey_logiter_valuelen(logiter);
-		uint64_t actual_valuelen;
-		returncode = sparkey_logiter_fill_value(logiter, i_logreader->logreader, wanted_valuelen, valuebuf, &actual_valuelen);
+		if (sparkey_logiter_type(logiter) == SPARKEY_ENTRY_PUT) {
+			uint64_t wanted_valuelen = sparkey_logiter_valuelen(logiter);
+			uint64_t actual_valuelen;
+			returncode = sparkey_logiter_fill_value(logiter, i_logreader->logreader, wanted_valuelen, valuebuf, &actual_valuelen);
 
-		if (returncode != SPARKEY_SUCCESS) {
-			free(keybuf);
-			free(valuebuf);
-			raise_sparkey(returncode);
-		} else if (wanted_valuelen != actual_valuelen) {
-			free(keybuf);
-			free(valuebuf);
-			rb_raise(GnistaException, "Corrupted read in logreader.");
+			if (returncode != SPARKEY_SUCCESS) {
+				free(keybuf);
+				free(valuebuf);
+				raise_sparkey(returncode);
+			} else if (wanted_valuelen != actual_valuelen) {
+				free(keybuf);
+				free(valuebuf);
+				rb_raise(GnistaException, "Corrupted read in logreader.");
+			}
+
+			rb_yield_values(3, rb_str_new((char *)keybuf, actual_keylen), rb_str_new((char *)valuebuf, actual_valuelen), put_sym);
+		} else {
+			rb_yield_values(3, rb_str_new((char *)keybuf, actual_keylen), Qnil, del_sym);
 		}
-
-		rb_yield_values(2, rb_str_new((char *)keybuf, actual_keylen), rb_str_new((char *)valuebuf, actual_valuelen));
-
 	}
 
 	free(keybuf);

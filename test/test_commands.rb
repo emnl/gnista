@@ -10,12 +10,10 @@ describe Gnista do
 
   before do
     @logwriter = Gnista::Logwriter.new log_path
-    @logreader = Gnista::Logreader.new log_path
   end
 
   after do
     @logwriter.close
-    @logreader.close
     FileUtils.rm log_path
   end
 
@@ -35,20 +33,28 @@ describe Gnista do
 
   it "can iterate each log entry" do
     @logwriter.put "key1", "value1"
-    @logwriter.put "key2", "value2"
+    @logwriter.delete "key2"
+    @logwriter.flush
+
+    lograder = Gnista::Logreader.new log_path
 
     a = true
-    @logreader.each do |key,value|
+    lograder.each do |key,value,type|
       if a
         key.must_equal "key1"
         value.must_equal "value1"
+        type.must_equal :put
         a = false
       else
         key.must_equal "key2"
-        value.must_equal "value2"
+        value.must_be_nil
+        type.must_equal :delete
       end
     end
 
+    a.must_equal false
+
+    lograder.close
   end
 
   it "can read hash max key/value length" do
@@ -83,6 +89,8 @@ describe Gnista do
         value.must_equal "value2"
       end
     end
+
+    a.must_equal false
 
     hash.close
     FileUtils.rm hash_path
@@ -122,7 +130,12 @@ describe Gnista do
 
   it "can be open or closed" do
     @logwriter.open?.must_equal true
-    @logreader.open?.must_equal true
+
+    logreader = Gnista::Logreader.new log_path
+    logreader.open?.must_equal true
+    logreader.close
+    logreader.open?.must_equal false
+
     Gnista::Hash.write hash_path, log_path
     hash = Gnista::Hash.new hash_path, log_path
     hash.open?.must_equal true
