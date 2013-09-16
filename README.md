@@ -50,7 +50,6 @@ logreader.each {|key,value,type| puts key, value, type }
 
 logreader.maxkeylen # largest key length
 logreader.maxkeylen # largest value length
-logreader.empty?
 
 
 Gnista::Hash.write "mylog.hash", "mylog.log" # no preferred hash size
