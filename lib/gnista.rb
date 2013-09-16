@@ -24,6 +24,10 @@ module Gnista
   class Hash
     attr_reader :hashpath, :logpath
 
+    def empty?
+      return length == 0
+    end
+
     def inspect
       %(#<#{self.class} #{@hashpath.inspect} #{@logpath.inspect}>)
     end

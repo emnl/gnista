@@ -294,6 +294,26 @@ static VALUE method_logreader_open(VALUE self) {
 	}
 }
 
+static VALUE method_logreader_maxkeylen(VALUE self) {
+	instance_logreader *i_logreader = get_logreader(self);
+	uint64_t maxkeylen;
+	check_open(i_logreader->open);
+
+	maxkeylen = sparkey_logreader_maxkeylen(i_logreader->logreader);
+
+	return INT2NUM(maxkeylen);
+}
+
+static VALUE method_logreader_maxvaluelen(VALUE self) {
+	instance_logreader *i_logreader = get_logreader(self);
+	uint64_t maxvaluelen;
+	check_open(i_logreader->open);
+
+	maxvaluelen = sparkey_logreader_maxvaluelen(i_logreader->logreader);
+
+	return INT2NUM(maxvaluelen);
+}
+
 /********************************************************************************/
 /**************** HASH **********************************************************/
 
@@ -547,6 +567,8 @@ void Init_gnista() {
 	rb_define_method(Logreader, "close", method_logreader_close, 0);
 	rb_define_method(Logreader, "each", method_logreader_each, 0);
 	rb_define_method(Logreader, "open?", method_logreader_open, 0);
+	rb_define_method(Logreader, "maxkeylen", method_logreader_maxkeylen, 0);
+	rb_define_method(Logreader, "maxvaluelen", method_logreader_maxvaluelen, 0);
 
 	rb_define_alloc_func(Hash, alloc_hashreader);
 	rb_define_singleton_method(Hash, "write", method_hash_write, -2);

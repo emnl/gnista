@@ -159,6 +159,7 @@ describe Gnista do
 
     hash.close
     logreader.close
+    FileUtils.rm hash_path
   end
 
   it "can get the logpath and the hashpath from logwriter, logreader and hash" do
@@ -173,6 +174,33 @@ describe Gnista do
 
     hash.close
     logreader.close
+    FileUtils.rm hash_path
+  end
+
+  it "can use empty? on hash" do
+    Gnista::Hash.write hash_path, log_path
+    hash = Gnista::Hash.new hash_path, log_path
+    hash.empty?.must_equal true
+    hash.close
+
+    @logwriter["key"] = "value"
+    @logwriter.flush
+    Gnista::Hash.write hash_path, log_path
+    hash = Gnista::Hash.new hash_path, log_path
+    hash.empty?.must_equal false
+    hash.close
+    FileUtils.rm hash_path
+  end
+
+  it "can read logreader max key/value length" do
+    @logwriter.put "abc", "a"
+    @logwriter.put "a", "abcd"
+    @logwriter.flush
+
+    logreader = Gnista::Logreader.new log_path
+
+    logreader.maxkeylen.must_equal 3
+    logreader.maxvaluelen.must_equal 4
   end
 
 end

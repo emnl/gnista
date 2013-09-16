@@ -44,6 +44,10 @@ logreader.logpath # => "mylog.log"
 logreader.each {|key,value,type| puts key, value, type }
 # => "key", "value"/nil, :put/:delete
 
+logreader.maxkeylen # largest key length
+logreader.maxkeylen # largest value length
+logreader.empty?
+
 
 Gnista::Hash.write "mylog.hash", "mylog.log" # no preferred hash size
 Gnista::Hash.write "mylog.hash", "mylog.log", 4 # 32 bit murmurhash3_x86_32
@@ -57,10 +61,11 @@ hash.each {|key,value| puts key, value }
 hash.get "key" # => "value" or nil
 hash["key"]
 
-hash.maxkeylen # largest key length
-hash.maxkeylen # largest value length
+hash.maxkeylen
+hash.maxkeylen
 hash.length
 hash.collisions
+hash.empty?
 
 
 # Don't forget to close!
