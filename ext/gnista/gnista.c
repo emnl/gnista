@@ -94,6 +94,7 @@ static VALUE method_logwriter_initialize(VALUE self, VALUE args) {
 		i_logwriter->open = false;
 	} else {
 		i_logwriter->open = true;
+		rb_iv_set(self, "@logpath", rb_ary_entry(args, 0));
 	}
 
 	return self;
@@ -203,6 +204,7 @@ static VALUE method_logreader_initialize(VALUE self, VALUE filename) {
 		i_logreader->open = false;
 	} else {
 		i_logreader->open = true;
+		rb_iv_set(self, "@logpath", filename);
 	}
 
 	return self;
@@ -356,6 +358,8 @@ static VALUE method_hash_initialize(VALUE self, VALUE hash_filename, VALUE log_f
 		i_hashreader->open = false;
 	} else {
 		i_hashreader->open = true;
+		rb_iv_set(self, "@hashpath", hash_filename);
+		rb_iv_set(self, "@logpath", log_filename);
 	}
 
 	return Qnil;

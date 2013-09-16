@@ -144,4 +144,31 @@ describe Gnista do
     FileUtils.rm hash_path
   end
 
+  it "can inspect logwriter, logreader and hash" do
+    logreader = Gnista::Logreader.new log_path
+    Gnista::Hash.write hash_path, log_path
+    hash = Gnista::Hash.new hash_path, log_path
+
+    @logwriter.inspect.must_equal %(#<#{@logwriter.class} #{log_path.inspect}>)
+    logreader.inspect.must_equal %(#<#{logreader.class} #{log_path.inspect}>)
+    hash.inspect.must_equal %(#<#{hash.class} #{hash_path.inspect} #{log_path.inspect}>)
+
+    hash.close
+    logreader.close
+  end
+
+  it "can get the logpath and the hashpath from logwriter, logreader and hash" do
+    logreader = Gnista::Logreader.new log_path
+    Gnista::Hash.write hash_path, log_path
+    hash = Gnista::Hash.new hash_path, log_path
+
+    @logwriter.logpath.must_equal log_path
+    logreader.logpath.must_equal log_path
+    hash.hashpath.must_equal hash_path
+    hash.logpath.must_equal log_path
+
+    hash.close
+    logreader.close
+  end
+
 end

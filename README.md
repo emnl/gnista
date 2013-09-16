@@ -29,20 +29,29 @@ logwriter = Gnista::Logwriter.new "mylog.log" # no compression
 logwriter = Gnista::Logwriter.new "mylog.log", 4000 # 4k compression block size
 logwriter = Gnista::Logwriter.new "mylog.log", :append # append to existing log
 
+logwriter.logpath # => "mylog.log"
+
 logwriter.put "key", "value" # put entry
 logwriter.del "key" # delete entry
 
 logwriter.flush
 
+
 logreader = Gnista::Logreader.new "mylog.log"
+logreader.logpath # => "mylog.log"
+
 logreader.each {|key,value,type| puts key, value, type }
 # => "key", "value"/nil, :put/:delete
+
 
 Gnista::Hash.write "mylog.hash", "mylog.log" # no preferred hash size
 Gnista::Hash.write "mylog.hash", "mylog.log", 4 # 32 bit murmurhash3_x86_32
 Gnista::Hash.write "mylog.hash", "mylog.log", 8 # lower 64-bit part of murmurhash3_x64_128
 
 hash = Gnista::Hash.new "mylog.hash", "mylog.log"
+logwriter.hashpath # => "mylog.hash"
+logwriter.logpath # => "mylog.log"
+
 hash.each {|key,value| puts key, value }
 hash.get "key" # => "value" or nil
 
@@ -50,6 +59,7 @@ hash.maxkeylen # largest key length
 hash.maxkeylen # largest value length
 hash.length
 hash.collisions
+
 
 # Don't forget to close!
 logwriter.close
