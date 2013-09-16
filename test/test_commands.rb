@@ -217,4 +217,19 @@ describe Gnista do
     FileUtils.rm hash_path
   end
 
+  it "extract keys and values from hash" do
+    @logwriter["key1"] = "value1"
+    @logwriter["key2"] = "value2"
+    @logwriter.flush
+
+    Gnista::Hash.write hash_path, log_path
+    hash = Gnista::Hash.new hash_path, log_path
+
+    hash.keys.must_equal ["key1", "key2"]
+    hash.values.must_equal ["value1", "value2"]
+
+    hash.close
+    FileUtils.rm hash_path
+  end
+
 end

@@ -67,6 +67,8 @@ hash.length
 hash.collisions
 hash.empty?
 hash.include? "key"
+hash.keys # => ["key1", "key2"]
+hash.values # => ["value1", "value2"]
 
 
 # Don't forget to close!
@@ -77,6 +79,7 @@ hash.close
 logwriter.open? || logreader.open? || hash.open? # => false
 ```
 
+Both ```Logreader```and ```Hash``` includes [Enumerable](http://ruby-doc.org/core-2.0.0/Enumerable.html).
 
 ## Contributing
 
