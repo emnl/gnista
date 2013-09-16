@@ -1,3 +1,20 @@
+# Version 0.0.3
+
+Release date 2013-09-16
+
+### Added
+
+* ```logpath``` for ```Logwriter```, ```Logreader``` and ```Hash```.
+* ```hashpath``` for ```Hash```.
+* Shorthand syntax for puts and gets. Similar to Ruby's native hash: []= and [].
+* ```empty?``` method for ```Hash```.
+* ```Logreader``` and ```Hash``` mixin [Enumerable](http://ruby-doc.org/core-2.0.0/Enumerable.html).
+* ```write_batch``` implemented for ```Logwriter```.
+
+### Fixed
+
+* String-check for all input to ```Logwriter``` and ```Hash```.
+
 # Version 0.0.2
 
 Release date 2013-09-12
