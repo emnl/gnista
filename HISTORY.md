@@ -8,8 +8,12 @@ Release date 2013-09-16
 * ```hashpath``` for ```Hash```.
 * Shorthand syntax for puts and gets. Similar to Ruby's native hash: []= and [].
 * ```empty?``` method for ```Hash```.
+* ```keys``` and ```values``` methods for ```Hash```.
+* ```has_key?``` method for ```Hash```.
+* ```maxkeylen``` and ```maxvaluelen``` for ```Logreader```.
 * ```Logreader``` and ```Hash``` mixin [Enumerable](http://ruby-doc.org/core-2.0.0/Enumerable.html).
 * ```write_batch``` implemented for ```Logwriter```.
+* Useful ```inspect``` for all classes.
 
 ### Fixed
 
