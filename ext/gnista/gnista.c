@@ -120,6 +120,8 @@ static VALUE method_logwriter_put(VALUE self, VALUE key, VALUE val) {
 	sparkey_returncode returncode;
 	instance_logwriter *i_logwriter = get_logwriter(self);
 	check_open(i_logwriter->open);
+	Check_Type(key, T_STRING);
+	Check_Type(val, T_STRING);
 
 	returncode = sparkey_logwriter_put(i_logwriter->logwriter, RSTRING_LEN(key), (uint8_t*)RSTRING_PTR(key), RSTRING_LEN(val), (uint8_t*)RSTRING_PTR(val));
 
@@ -134,6 +136,7 @@ static VALUE method_logwriter_delete(VALUE self, VALUE key) {
 	sparkey_returncode returncode;
 	instance_logwriter *i_logwriter = get_logwriter(self);
 	check_open(i_logwriter->open);
+	Check_Type(key, T_STRING);
 
 	returncode = sparkey_logwriter_delete(i_logwriter->logwriter, RSTRING_LEN(key), (uint8_t*)RSTRING_PTR(key));
 
@@ -460,6 +463,7 @@ static VALUE method_hash_get(VALUE self, VALUE key) {
 	instance_hashreader *i_hashreader = get_hashreader(self);
 	sparkey_logiter *logiter;
 	check_open(i_hashreader->open);
+	Check_Type(key, T_STRING);
 
 	returncode = sparkey_logiter_create(&logiter, sparkey_hash_getreader(i_hashreader->hashreader));
 
