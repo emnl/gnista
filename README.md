@@ -66,6 +66,7 @@ hash.maxkeylen
 hash.length
 hash.collisions
 hash.empty?
+hash.include? "key"
 
 
 # Don't forget to close!

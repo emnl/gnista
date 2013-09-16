@@ -203,4 +203,18 @@ describe Gnista do
     logreader.maxvaluelen.must_equal 4
   end
 
+  it "can decide if hash has_key?" do
+    @logwriter["key"] = "value"
+    @logwriter.flush
+
+    Gnista::Hash.write hash_path, log_path
+    hash = Gnista::Hash.new hash_path, log_path
+
+    hash.has_key?("key").must_equal true
+    hash.include?("key1").must_equal false
+
+    hash.close
+    FileUtils.rm hash_path
+  end
+
 end

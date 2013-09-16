@@ -24,6 +24,10 @@ module Gnista
   class Hash
     attr_reader :hashpath, :logpath
 
+    def has_key?(key)
+      return self[key] != nil
+    end
+
     def empty?
       return length == 0
     end
@@ -34,5 +38,7 @@ module Gnista
 
     alias_method :size, :length
     alias_method :[], :get
+    alias_method :include?, :has_key?
+    alias_method :member?, :has_key?
   end
 end
