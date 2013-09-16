@@ -5,8 +5,8 @@ module Gnista
   class Logwriter
     attr_reader :logpath
 
-    def write_batch(&block)
-      block.call
+    def write_batch
+      yield if block_given?
       flush
     end
 
