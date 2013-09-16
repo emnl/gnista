@@ -10,6 +10,7 @@ module Gnista
     end
 
     alias_method :del, :delete
+    alias_method :[]=, :put
   end
 
   class Logreader
@@ -28,5 +29,6 @@ module Gnista
     end
 
     alias_method :size, :length
+    alias_method :[], :get
   end
 end

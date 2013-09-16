@@ -99,6 +99,7 @@ describe Gnista do
   it "can get from hash" do
     @logwriter.put "key1", "value1"
     @logwriter.put "key2", "value2"
+    @logwriter.put "key3", "value3"
     @logwriter.delete "key2"
     @logwriter.flush
     Gnista::Hash.write hash_path, log_path
@@ -109,12 +110,15 @@ describe Gnista do
 
     ret = hash.get "key2"
     ret.must_be_nil
+
+    ret = hash["key3"]
+    ret.must_equal "value3"
     FileUtils.rm hash_path
   end
 
   it "can get the hash length" do
     @logwriter.put "key1", "value1"
-    @logwriter.put "key2", "value2"
+    @logwriter["key2"] = "value2"
     @logwriter.put "key3", "value3"
     @logwriter.flush
     Gnista::Hash.write hash_path, log_path

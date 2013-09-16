@@ -32,6 +32,7 @@ logwriter = Gnista::Logwriter.new "mylog.log", :append # append to existing log
 logwriter.logpath # => "mylog.log"
 
 logwriter.put "key", "value" # put entry
+logwriter["key"] = "value"
 logwriter.del "key" # delete entry
 
 logwriter.flush
@@ -54,6 +55,7 @@ logwriter.logpath # => "mylog.log"
 
 hash.each {|key,value| puts key, value }
 hash.get "key" # => "value" or nil
+hash["key"]
 
 hash.maxkeylen # largest key length
 hash.maxkeylen # largest value length
