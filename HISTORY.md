@@ -1,3 +1,12 @@
+# Version 0.0.4
+
+Release date 2013-09-16
+
+### Added
+
+* History for minor changes.
+* Lesson learned regarding "gem yank".
+
 # Version 0.0.3
 
 Release date 2013-09-16
