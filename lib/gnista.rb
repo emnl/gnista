@@ -5,6 +5,11 @@ module Gnista
   class Logwriter
     attr_reader :logpath
 
+    def write_batch(&block)
+      block.call
+      flush
+    end
+
     def inspect
       %(#<#{self.class} #{@logpath.inspect}>)
     end

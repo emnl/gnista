@@ -34,8 +34,12 @@ logwriter.logpath # => "mylog.log"
 logwriter.put "key", "value" # put entry
 logwriter["key"] = "value"
 logwriter.del "key" # delete entry
-
 logwriter.flush
+
+logwriter.write_batch do
+  logwriter["key1"] = "value1"
+  logwriter["key2"] = "value2"
+end
 
 
 logreader = Gnista::Logreader.new "mylog.log"

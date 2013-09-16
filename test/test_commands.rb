@@ -232,4 +232,16 @@ describe Gnista do
     FileUtils.rm hash_path
   end
 
+  it "can write_batch with logwriter" do
+    @logwriter.write_batch do
+      @logwriter["key1"] = "value1"
+    end
+
+    logreader = Gnista::Logreader.new log_path
+    _,value,_ = logreader.first
+    value.must_equal "value1"
+
+    logreader.close!
+  end
+
 end
