@@ -82,7 +82,7 @@ hash.close
 logwriter.open? || logreader.open? || hash.open? # => false
 ```
 
-Both ```Logreader```and ```Hash``` includes [Enumerable](http://ruby-doc.org/core-2.0.0/Enumerable.html).
+Both ```Logreader```and ```Hash``` mixin [Enumerable](http://ruby-doc.org/core-2.0.0/Enumerable.html).
 
 ## Contributing
 
