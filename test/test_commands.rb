@@ -238,9 +238,7 @@ describe Gnista do
     end
 
     logreader = Gnista::Logreader.new log_path
-    _,value,_ = logreader.first
-    value.must_equal "value1"
-
+    logreader.count.must_equal 1
     logreader.close!
   end
 
