@@ -1,24 +1,24 @@
 #include <ruby.h>
 #include <sparkey/sparkey.h>
 
-typedef int bool;
+typedef uint8_t bool;
 #define true 1
 #define false 0
 
 
 typedef struct instance_logwriter {
 	sparkey_logwriter *logwriter;
-	int open;
+	bool open;
 } instance_logwriter;
 
 typedef struct instance_logreader {
 	sparkey_logreader *logreader;
-	int open;
+	bool open;
 } instance_logreader;
 
 typedef struct instance_hashreader {
 	sparkey_hashreader *hashreader;
-	int open;
+	bool open;
 } instance_hashreader;
 
 /********************************************************************************/
@@ -238,7 +238,7 @@ static VALUE method_logreader_each(VALUE self) {
 	VALUE del_sym = ID2SYM(rb_intern("delete"));
 	uint8_t *keybuf = malloc(sparkey_logreader_maxkeylen(i_logreader->logreader));
 	uint8_t *valuebuf = malloc(sparkey_logreader_maxvaluelen(i_logreader->logreader));
-	while (1) {
+	while (true) {
 		returncode = sparkey_logiter_next(logiter, i_logreader->logreader);
 
 		if (sparkey_logiter_state(logiter) != SPARKEY_ITER_ACTIVE) {
@@ -412,7 +412,7 @@ static VALUE method_hash_each(VALUE self) {
 
 	uint8_t *keybuf = malloc(sparkey_logreader_maxkeylen(logreader));
 	uint8_t *valuebuf = malloc(sparkey_logreader_maxvaluelen(logreader));
-	while (1) {
+	while (true) {
 		returncode = sparkey_logiter_hashnext(logiter, i_hashreader->hashreader);
 
 		if (sparkey_logiter_state(logiter) != SPARKEY_ITER_ACTIVE) {
