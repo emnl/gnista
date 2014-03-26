@@ -90,8 +90,8 @@ static VALUE method_logwriter_initialize(VALUE self, VALUE args) {
 	}
 
 	if (returncode != SPARKEY_SUCCESS) {
-		raise_sparkey(returncode);
 		i_logwriter->open = false;
+		raise_sparkey(returncode);
 	} else {
 		i_logwriter->open = true;
 		rb_iv_set(self, "@logpath", rb_ary_entry(args, 0));
@@ -203,8 +203,8 @@ static VALUE method_logreader_initialize(VALUE self, VALUE filename) {
 	returncode = sparkey_logreader_open(&i_logreader->logreader, RSTRING_PTR(filename));
 
 	if (returncode != SPARKEY_SUCCESS) {
-		raise_sparkey(returncode);
 		i_logreader->open = false;
+		raise_sparkey(returncode);
 	} else {
 		i_logreader->open = true;
 		rb_iv_set(self, "@logpath", filename);
@@ -377,8 +377,8 @@ static VALUE method_hash_initialize(VALUE self, VALUE hash_filename, VALUE log_f
 	returncode = sparkey_hash_open(&i_hashreader->hashreader, RSTRING_PTR(hash_filename), RSTRING_PTR(log_filename));
 
 	if (returncode != SPARKEY_SUCCESS) {
-		raise_sparkey(returncode);
 		i_hashreader->open = false;
+		raise_sparkey(returncode);
 	} else {
 		i_hashreader->open = true;
 		rb_iv_set(self, "@hashpath", hash_filename);
