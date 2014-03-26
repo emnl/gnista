@@ -54,4 +54,18 @@ describe Gnista do
     FileUtils.rm log_path
   end
 
+  it "will throw exception on invalid arguments" do
+    assert_raises TypeError do
+      Gnista::Logwriter.new 123
+    end
+
+    assert_raises GnistaException do
+      Gnista::Logreader.new "none_existing_file"
+    end
+
+    assert_raises GnistaException do
+      Gnista::Hash.new "none_existing_file", "none_existing_file"
+    end
+  end
+
 end

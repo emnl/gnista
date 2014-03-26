@@ -57,6 +57,7 @@ static void dealloc_logwriter(void *p) {
 
 static VALUE alloc_logwriter(VALUE klass) {
 	instance_logwriter *i_logwriter = ALLOC(instance_logwriter);
+	i_logwriter->open = false;
 	return Data_Wrap_Struct(klass, 0, dealloc_logwriter, i_logwriter);
 }
 
@@ -91,7 +92,6 @@ static VALUE method_logwriter_initialize(VALUE self, VALUE args) {
 
 	if (returncode != SPARKEY_SUCCESS) {
 		raise_sparkey(returncode);
-		i_logwriter->open = false;
 	} else {
 		i_logwriter->open = true;
 		rb_iv_set(self, "@logpath", rb_ary_entry(args, 0));
@@ -186,6 +186,7 @@ static void dealloc_logreader(void *p) {
 
 static VALUE alloc_logreader(VALUE klass) {
 	instance_logreader *i_logreader = ALLOC(instance_logreader);
+	i_logreader->open = false;
 	return Data_Wrap_Struct(klass, 0, dealloc_logreader, i_logreader);
 }
 
@@ -204,7 +205,6 @@ static VALUE method_logreader_initialize(VALUE self, VALUE filename) {
 
 	if (returncode != SPARKEY_SUCCESS) {
 		raise_sparkey(returncode);
-		i_logreader->open = false;
 	} else {
 		i_logreader->open = true;
 		rb_iv_set(self, "@logpath", filename);
@@ -332,6 +332,7 @@ static void dealloc_hashreader(void *p) {
 
 static VALUE alloc_hashreader(VALUE klass) {
 	instance_hashreader *i_hashreader = ALLOC(instance_hashreader);
+	i_hashreader->open = false;
 	return Data_Wrap_Struct(klass, 0, dealloc_hashreader, i_hashreader);
 }
 
@@ -378,7 +379,6 @@ static VALUE method_hash_initialize(VALUE self, VALUE hash_filename, VALUE log_f
 
 	if (returncode != SPARKEY_SUCCESS) {
 		raise_sparkey(returncode);
-		i_hashreader->open = false;
 	} else {
 		i_hashreader->open = true;
 		rb_iv_set(self, "@hashpath", hash_filename);
