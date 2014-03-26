@@ -1,3 +1,17 @@
+# Version 0.0.5
+
+Release date 2014-03-26
+
+### Added
+
+* Useful error messages on build.
+* Rubinius compatible tests.
+
+### Fixed
+
+* SEGFAULT on interrupted initialization.
+* Boolean consistency.
+
 # Version 0.0.4
 
 Release date 2013-09-16
