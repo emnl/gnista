@@ -36,10 +36,10 @@ describe Gnista do
     @logwriter.delete "key2"
     @logwriter.flush
 
-    lograder = Gnista::Logreader.new log_path
+    logreader = Gnista::Logreader.new log_path
 
     a = true
-    lograder.each do |key,value,type|
+    logreader.each do |key,value,type|
       if a
         key.must_equal "key1"
         value.must_equal "value1"
@@ -54,7 +54,31 @@ describe Gnista do
 
     a.must_equal false
 
-    lograder.close
+    assert_raises GnistaException do
+      logreader.each do
+        logreader.close
+      end
+    end
+  end
+
+  it "can iterate each log with an enumerator" do
+    @logwriter.put "key1", "value1"
+    @logwriter.delete "key2"
+    @logwriter.flush
+
+    logreader = Gnista::Logreader.new log_path
+
+    iter = logreader.each
+    iter.next.must_equal ["key1", "value1", :put]
+    iter.next.must_equal ["key2", nil, :delete]
+
+    iter = logreader.each
+    iter.next.must_equal ["key1", "value1", :put]
+    logreader.close
+
+    assert_raises GnistaException do
+      iter.next.must_equal ["key2", nil, :delete]
+    end
   end
 
   it "can read hash max key/value length" do
@@ -92,7 +116,35 @@ describe Gnista do
 
     a.must_equal false
 
+    assert_raises GnistaException do
+      hash.each do
+        hash.close
+      end
+    end
+
+    FileUtils.rm hash_path
+  end
+
+  it "can iterate each hash with an enumerator" do
+    @logwriter.put "key1", "value1"
+    @logwriter.put "key2", "value2"
+    @logwriter.flush
+    Gnista::Hash.write hash_path, log_path
+
+    hash = Gnista::Hash.new hash_path, log_path
+
+    iter = hash.each
+    iter.next.must_equal ["key1", "value1"]
+    iter.next.must_equal ["key2", "value2"]
+
+    iter = hash.each
+    iter.next.must_equal ["key1", "value1"]
     hash.close
+
+    assert_raises GnistaException do
+      iter.next.must_equal ["key2", "value2"]
+    end
+
     FileUtils.rm hash_path
   end
 

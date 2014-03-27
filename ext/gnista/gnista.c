@@ -228,6 +228,10 @@ static VALUE method_logreader_each(VALUE self) {
 	instance_logreader *i_logreader = get_logreader(self);
 	check_open(i_logreader->open);
 
+	if (!rb_block_given_p()) {
+		return rb_funcall(self, rb_intern("to_enum"), 0);
+	}
+
 	returncode = sparkey_logiter_create(&logiter, i_logreader->logreader);
 
 	if (returncode != SPARKEY_SUCCESS) {
@@ -238,7 +242,7 @@ static VALUE method_logreader_each(VALUE self) {
 	VALUE del_sym = ID2SYM(rb_intern("delete"));
 	uint8_t *keybuf = malloc(sparkey_logreader_maxkeylen(i_logreader->logreader));
 	uint8_t *valuebuf = malloc(sparkey_logreader_maxvaluelen(i_logreader->logreader));
-	while (true) {
+	while (i_logreader->open) {
 		returncode = sparkey_logiter_next(logiter, i_logreader->logreader);
 
 		if (sparkey_logiter_state(logiter) != SPARKEY_ITER_ACTIVE) {
@@ -284,7 +288,9 @@ static VALUE method_logreader_each(VALUE self) {
 	free(valuebuf);
 	sparkey_logiter_close(&logiter);
 
-	return Qnil;
+	check_open(i_logreader->open);
+
+	return self;
 }
 
 static VALUE method_logreader_open(VALUE self) {
@@ -402,8 +408,12 @@ static VALUE method_hash_each(VALUE self) {
 	instance_hashreader *i_hashreader = get_hashreader(self);
 	sparkey_logiter *logiter;
 	check_open(i_hashreader->open);
-	sparkey_logreader *logreader = sparkey_hash_getreader(i_hashreader->hashreader);
 
+	if (!rb_block_given_p()) {
+		return rb_funcall(self, rb_intern("to_enum"), 0);
+	}
+
+	sparkey_logreader *logreader = sparkey_hash_getreader(i_hashreader->hashreader);
 	returncode = sparkey_logiter_create(&logiter, logreader);
 
 	if (returncode != SPARKEY_SUCCESS) {
@@ -412,7 +422,7 @@ static VALUE method_hash_each(VALUE self) {
 
 	uint8_t *keybuf = malloc(sparkey_logreader_maxkeylen(logreader));
 	uint8_t *valuebuf = malloc(sparkey_logreader_maxvaluelen(logreader));
-	while (true) {
+	while (i_hashreader->open) {
 		returncode = sparkey_logiter_hashnext(logiter, i_hashreader->hashreader);
 
 		if (sparkey_logiter_state(logiter) != SPARKEY_ITER_ACTIVE) {
@@ -448,14 +458,15 @@ static VALUE method_hash_each(VALUE self) {
 		}
 
 		rb_yield_values(2, rb_str_new((char *)keybuf, actual_keylen), rb_str_new((char *)valuebuf, actual_valuelen));
-
 	}
 
 	free(keybuf);
 	free(valuebuf);
 	sparkey_logiter_close(&logiter);
 
-	return Qnil;
+	check_open(i_hashreader->open);
+
+	return self;
 }
 
 static VALUE method_hash_get(VALUE self, VALUE key) {
