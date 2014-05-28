@@ -1,3 +1,11 @@
+# Version 1.0.0
+
+Release date 2014-05-28
+
+### Fixed
+
+* SEGFAULT on close during iteration.
+
 # Version 0.0.5
 
 Release date 2014-03-26
