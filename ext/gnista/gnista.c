@@ -487,6 +487,7 @@ static VALUE method_hash_get(VALUE self, VALUE key) {
 	returncode = sparkey_hash_get(i_hashreader->hashreader, (uint8_t*)RSTRING_PTR(key), RSTRING_LEN(key), logiter);
 
 	if (sparkey_logiter_state(logiter) != SPARKEY_ITER_ACTIVE) {
+		sparkey_logiter_close(&logiter);
 		return Qnil;
 	}
 
@@ -494,6 +495,7 @@ static VALUE method_hash_get(VALUE self, VALUE key) {
 	uint8_t *valuebuf = malloc(wanted_valuelen);
 	uint64_t actual_valuelen;
 	returncode = sparkey_logiter_fill_value(logiter, sparkey_hash_getreader(i_hashreader->hashreader), wanted_valuelen, valuebuf, &actual_valuelen);
+	sparkey_logiter_close(&logiter);
 
 	if (returncode != SPARKEY_SUCCESS) {
 		free(valuebuf);
@@ -502,8 +504,6 @@ static VALUE method_hash_get(VALUE self, VALUE key) {
 		free(valuebuf);
 		rb_raise(GnistaException, "Corrupt entry in hash.");
 	}
-
-	sparkey_logiter_close(&logiter);
 
 	VALUE v = rb_str_new((char *)valuebuf, actual_valuelen);
 	free(valuebuf);
