@@ -1,6 +1,6 @@
 # Version 1.0.1
 
-Release date 2016-05-20
+Release date 2016-08-09
 
 ### Fixed
 
