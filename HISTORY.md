@@ -1,3 +1,11 @@
+# Version 1.0.1
+
+Release date 2016-05-20
+
+### Fixed
+
+* Memory leak on hash get of non-existent key.
+
 # Version 1.0.0
 
 Release date 2014-05-28
