@@ -4,9 +4,7 @@ Gnista is a wrapper for the database/hashstore [Sparkey](http://github.com/spoti
 
 ## Setup
 
-You will need Sparkey, obviously. It's really easy to install. Head over to [http://github.com/spotify/sparkey](http://github.com/spotify/sparkey) and install it, I'll wait..
-
-Now, add this line to your application's Gemfile:
+Add this line to your application's Gemfile:
 
     gem 'gnista'
 
@@ -88,7 +86,8 @@ Both ```Logreader```and ```Hash``` mixin [Enumerable](http://ruby-doc.org/core-2
 
 __Step-by-step:__
 
-1. Fork it
+1. Fork it  
+    1. Fetch submodules (`git submodule update`)
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Write some code
 4. Build and test

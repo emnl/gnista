@@ -1,0 +1,6 @@
+[submodule "ext/gnista/sparkey"]
+	path = ext/gnista/sparkey
+	url = https://github.com/spotify/sparkey.git
+[submodule "ext/gnista/snappy"]
+	path = ext/gnista/snappy
+	url = https://github.com/google/snappy
