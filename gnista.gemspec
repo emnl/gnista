@@ -16,7 +16,9 @@ Gem::Specification.new do |spec|
   spec.files         = %w[README.md LICENSE.txt HISTORY.md Rakefile
                           ext/gnista/extconf.rb ext/gnista/gnista.c
                           test/test_gnista.rb test/test_commands.rb
-                          lib/gnista.rb lib/gnista/version.rb]
+                          lib/gnista.rb lib/gnista/version.rb] +
+                       # Add all files from all included submodules.
+                       `git submodule --quiet foreach 'git ls-files | sed "s|^|$path/|"'`.split("\n")
 
   spec.test_files    = ['test/test_gnista.rb', 'test/test_commands.rb']
   spec.require_paths = ["ext", "lib"]

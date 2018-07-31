@@ -18,6 +18,7 @@ test/version_tmp
 tmp
 
 Makefile
+extconf.h
 mkmf.log
 
 .DS_Store
